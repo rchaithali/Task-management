@@ -1,65 +1,119 @@
+import { useState, useEffect } from "react";
 import "../styles/App.scss";
 import Status from "./Status";
-import {useState,useEffect} from "react";
-
 
 function App() {
-  const[tasks,setTasks] = useState([]);
-  useEffect(()=>{
-    console.log("using effect")
-  },[]);
-  function addEmptyTask(status){
-//
+  const [tasks, setTasks] = useState([]);
+   useEffect(() => {
+    loadTFromLS();
+  }, []);
+
+  function addEmptyTask(status) {
+    const lastTask = tasks[tasks.length - 1];
+
+    let newTaskId = 1;
+
+    if (lastTask !== undefined) {
+      newTaskId = lastTask.id + 1;
+    }
+
+    setTasks((tasks) => [
+      ...tasks,
+      {
+        id: newTaskId,
+        title: "",
+        description: "",
+        urgency: "",
+        status: status,
+      },
+    ]);
   }
-  function addTask(tasktoAdd){
-///
+
+  function addTask(taskToAdd) {
+    let filteredTasks = tasks.filter((task) => {
+      return task.id !== taskToAdd.id;
+    });
+
+    let newTaskList = [...filteredTasks, taskToAdd];
+
+    setTasks(newTaskList);
+
+     saveTToLS(newTaskList);
   }
-  function moveTask(taskId){
-///
+
+  function deleteTask(taskId) {
+    let filteredTasks = tasks.filter((task) => {
+      return task.id !== taskId;
+    });
+
+    setTasks(filteredTasks);
+
+     saveTToLS(filteredTasks);
   }
-  function deleteTask(taskId){
-    ///
+
+  function moveTask(id, newStatus) {
+    let task = tasks.filter((task) => {
+      return task.id === id;
+    })[0];
+
+    let filteredTasks = tasks.filter((task) => {
+      return task.id !== id;
+    });
+
+    task.status = newStatus;
+
+    let newTaskList = [...filteredTasks, task];
+
+    setTasks(newTaskList);
+
+     saveTToLS(newTaskList);
   }
-  function moveTask(id, newStatus){
-    ///
+
+  function  saveTToLS(tasks) {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
   }
-  function saveTToLS(tasks){
-    ///
+
+  function loadTFromLS() {
+    let loadedTasks = localStorage.getItem("tasks");
+
+    let tasks = JSON.parse(loadedTasks);
+
+    if (tasks) {
+      setTasks(tasks);
+    }
   }
-  function loadTFromLS(tasks){
-    ///
-  }
+
   return (
     <div className="App">
-     <h1>Task Manager</h1>
-     <main>
-      <section>
-        <Status
-        task={tasks}
-        addEmptyTask={addEmptyTask}
-        addTask={addTask}
-        deleteTask={deleteTask}
-        moveTask={moveTask}
-        status="Overdue"/>
-         <Status
-        task={tasks}
-        addEmptyTask={addEmptyTask}
-        addTask={addTask}
-        deleteTask={deleteTask}
-        moveTask={moveTask}
-        status="In Progress"/>
-         <Status
-        task={tasks}
-        addEmptyTask={addEmptyTask}
-        addTask={addTask}
-        deleteTask={deleteTask}
-        moveTask={moveTask}
-        status="Completed"/>
-
-
-       
-      </section>
-     </main>
+      <h1>Task Management</h1>
+      <main>
+        <section>
+          <Status
+            tasks={tasks}
+            addEmptyTask={addEmptyTask}
+            addTask={addTask}
+            deleteTask={deleteTask}
+            moveTask={moveTask}
+            status="Overdue"
+          />
+          <Status
+            tasks={tasks}
+            addEmptyTask={addEmptyTask}
+            addTask={addTask}
+            deleteTask={deleteTask}
+            moveTask={moveTask}
+            status="In Progress"
+          />
+          <Status
+            tasks={tasks}
+            addEmptyTask={addEmptyTask}
+            addTask={addTask}
+            deleteTask={deleteTask}
+            moveTask={moveTask}
+            status="Completed"
+          />
+        </section>
+      </main>
     </div>
   );
 }

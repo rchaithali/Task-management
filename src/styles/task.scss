@@ -1,4 +1,5 @@
-@import "_properties.scss";
+@import "properties.scss";
+@import url('https://fonts.googleapis.com/css2?family=Hi+Melody&display=swap');
 
 .task {
   padding: 1rem;
@@ -7,12 +8,14 @@
   align-items: flex-end;
   border: 1px solid $white;
   border-radius: 0.25rem;
+  box-shadow: 0 3px 10px rgba(71, 0, 82, 0.498);
 
   &.collapsedTask {
     .moveTask {
       margin-bottom: 0.5rem;
       font-size: 1.5rem;
       padding: 0.3rem 0.5rem;
+    
     }
   }
 
@@ -31,7 +34,7 @@
       text-align: center;
       resize: none;
       display: flex;
-      font-family: "Kanit", sans-serif;
+      font-family: 'Hi Melody', cursive;
 
       &:hover {
         cursor: pointer;
@@ -53,7 +56,7 @@
       margin-bottom: 0.5rem;
       padding: 0.5rem 0;
       width: 100%;
-      font-size: 1.1rem;
+      font-size: 2rem;
 
       &:hover {
         cursor: text;
@@ -64,7 +67,7 @@
       margin-bottom: 0.5rem;
       padding: 0.5rem;
       width: 100%;
-      font-size: 1.1rem;
+      font-size: 2rem;
 
       &:hover {
         cursor: text;
@@ -84,7 +87,7 @@
         border-radius: 0.25rem;
 
         .icon {
-          font-size: 1.25rem;
+          font-size: 1.35rem;
           margin-right: 0.25rem;
           transition: all 0.4s ease-in-out;
 
@@ -143,7 +146,7 @@
 
       .title {
         margin: 0;
-
+        
         &:hover {
           border-color: transparent;
           cursor: default;
